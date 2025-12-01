@@ -1,6 +1,5 @@
 import React from 'react';
-import { Sparkles, Trees, Minimize2 } from 'lucide-react';
-import { COLORS } from '../constants';
+import { Sparkles, Trees } from 'lucide-react';
 
 interface OverlayProps {
   isTree: boolean;
@@ -9,57 +8,67 @@ interface OverlayProps {
 
 const Overlay: React.FC<OverlayProps> = ({ isTree, setIsTree }) => {
   return (
-    <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-8 z-10">
+    <div style={{
+      position: 'absolute',
+      inset: 0,
+      pointerEvents: 'none',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      padding: '2rem',
+      zIndex: 10
+    }}>
       
       {/* Header */}
-      <div className="flex flex-col items-center mt-4">
-        <h1 
-          className="text-4xl md:text-6xl font-serif text-transparent bg-clip-text bg-gradient-to-b from-yellow-200 to-yellow-600 tracking-widest uppercase drop-shadow-lg text-center"
-          style={{ fontFamily: '"Cinzel", serif' }}
-        >
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '1rem' }}>
+        <h1 className="ui-title" style={{ fontSize: '3rem', margin: 0, lineHeight: 1.2 }}>
           Interactive Christmas Tree
         </h1>
-        <p className="text-emerald-400 text-sm md:text-base tracking-[0.3em] mt-2 font-light uppercase opacity-80">
+        <p className="ui-subtitle" style={{ fontSize: '0.9rem' }}>
           Holiday Collection 2025
         </p>
       </div>
 
       {/* Controls */}
-      <div className="flex flex-col items-center mb-12 pointer-events-auto">
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem', pointerEvents: 'auto' }}>
         <button
           onClick={() => setIsTree(!isTree)}
-          className={`
-            group relative flex items-center justify-center gap-3 px-8 py-4 
-            rounded-full transition-all duration-500 ease-out
-            backdrop-blur-md border border-white/10
-            ${isTree ? 'bg-emerald-900/40' : 'bg-black/40'}
-            hover:bg-emerald-800/60 hover:scale-105 hover:border-yellow-500/50
-            shadow-[0_0_30px_rgba(0,0,0,0.5)]
-          `}
+          className={`glass-button ${isTree ? 'active' : 'inactive'}`}
         >
           {/* Button Glow Behind */}
-          <div className="absolute inset-0 rounded-full bg-yellow-500/10 blur-xl group-hover:bg-yellow-500/20 transition-all" />
+          <div className="glow-bg" />
 
           {isTree ? (
             <>
-              <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
-              <span className="text-yellow-100 font-serif tracking-widest text-lg">SCATTER</span>
+              <Sparkles size={20} color="#fde047" className="animate-pulse" />
+              <span style={{ color: '#fef9c3', fontFamily: 'serif', letterSpacing: '0.1em', fontSize: '1.125rem' }}>SCATTER</span>
             </>
           ) : (
             <>
-              <Trees className="w-5 h-5 text-emerald-300" />
-              <span className="text-emerald-100 font-serif tracking-widest text-lg">ASSEMBLE</span>
+              <Trees size={20} color="#6ee7b7" />
+              <span style={{ color: '#d1fae5', fontFamily: 'serif', letterSpacing: '0.1em', fontSize: '1.125rem' }}>ASSEMBLE</span>
             </>
           )}
         </button>
         
-        <div className="mt-4 text-white/30 text-xs font-mono tracking-widest">
+        <div style={{ marginTop: '1rem', color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', fontFamily: 'monospace', letterSpacing: '0.2em' }}>
             {isTree ? 'STATE: STRUCTURED' : 'STATE: CHAOTIC'}
         </div>
       </div>
       
-      {/* Ornamental Borders */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none border-[1px] border-white/5 m-4 rounded-lg hidden md:block" />
+      {/* Ornamental Borders - hidden on small screens typically, but we'll keep simple inline style */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        border: '1px solid rgba(255,255,255,0.05)',
+        boxSizing: 'border-box',
+        margin: '1rem',
+        borderRadius: '8px'
+      }} />
     </div>
   );
 };

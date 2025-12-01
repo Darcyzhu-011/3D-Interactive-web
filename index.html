@@ -3,29 +3,117 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arix Signature Christmas Tree</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Interactive Christmas Tree</title>
     <style>
-      body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #010804; }
       @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+      
+      body, html { 
+        margin: 0; 
+        padding: 0; 
+        height: 100%; 
+        overflow: hidden; 
+        background-color: #010804; 
+        font-family: 'Playfair Display', serif;
+      }
+
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Custom UI Classes replacing Tailwind */
+      .ui-title {
+        font-family: 'Cinzel', serif;
+        background: linear-gradient(to bottom, #fef08a, #ca8a04);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-align: center;
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+      }
+
+      .ui-subtitle {
+        color: #34d399; /* emerald-400 */
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font-weight: 300;
+        opacity: 0.8;
+        text-align: center;
+        margin-top: 0.5rem;
+      }
+
+      .glass-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1rem 2rem;
+        border-radius: 9999px;
+        transition: all 0.5s ease-out;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glass-button:hover {
+        transform: scale(1.05);
+        border-color: rgba(234, 179, 8, 0.5); /* yellow-500 */
+      }
+
+      .glass-button.active {
+        background-color: rgba(6, 78, 59, 0.4); /* emerald-900 */
+      }
+      
+      .glass-button.inactive {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .glow-bg {
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
+        background-color: rgba(234, 179, 8, 0.1);
+        filter: blur(20px);
+        transition: background-color 0.3s;
+      }
+
+      .glass-button:hover .glow-bg {
+        background-color: rgba(234, 179, 8, 0.2);
+      }
+
+      .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: .5; }
+      }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "three": "https://aistudiocdn.com/three@^0.181.2",
     "@react-three/fiber": "https://aistudiocdn.com/@react-three/fiber@^9.4.2",
     "@react-three/drei": "https://aistudiocdn.com/@react-three/drei@^10.7.7",
     "@react-three/postprocessing": "https://aistudiocdn.com/@react-three/postprocessing@^3.0.4",
-    "postprocessing": "https://aistudiocdn.com/postprocessing@^6.38.0"
+    "postprocessing": "https://aistudiocdn.com/postprocessing@^6.38.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
   }
 }
 </script>
 </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

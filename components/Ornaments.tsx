@@ -21,6 +21,7 @@ const Ornaments: React.FC<OrnamentGroupProps> = ({ isTree, type }) => {
   const colorArray = useMemo(() => {
     const array = new Float32Array(count * 3);
     const tempColor = new THREE.Color();
+    const hsl = { h: 0, s: 0, l: 0 };
     
     for (let i = 0; i < count; i++) {
         // Variation in gold and red
@@ -29,8 +30,12 @@ const Ornaments: React.FC<OrnamentGroupProps> = ({ isTree, type }) => {
         } else {
              tempColor.set(COLORS.RED_LUXURY);
         }
+        
         // Add slight brightness variation
-        tempColor.offsetHSL(0, 0, (Math.random() - 0.5) * 0.1);
+        tempColor.getHSL(hsl);
+        // Vary lightness slightly
+        tempColor.setHSL(hsl.h, hsl.s, hsl.l + (Math.random() - 0.5) * 0.1);
+        
         tempColor.toArray(array, i * 3);
     }
     return array;

@@ -9,10 +9,10 @@ const App: React.FC = () => {
   const [isTree, setIsTree] = useState<boolean>(false);
 
   return (
-    <div className="w-full h-screen bg-[#010804] text-white overflow-hidden relative">
+    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#010804', position: 'relative', overflow: 'hidden' }}>
       
       {/* 3D Scene */}
-      <div className="absolute inset-0 z-0">
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
         <Canvas
           shadows
           dpr={[1, 2]} // Quality scaling for performance
