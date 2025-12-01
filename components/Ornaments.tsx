@@ -103,6 +103,7 @@ const Ornaments: React.FC<OrnamentGroupProps> = ({ isTree, type }) => {
       args={[undefined, undefined, count]}
       castShadow
       receiveShadow
+      frustumCulled={false}
     >
       {type === 'SPHERE' ? (
         <sphereGeometry args={[0.2, 16, 16]} />

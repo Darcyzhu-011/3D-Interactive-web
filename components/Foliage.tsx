@@ -83,7 +83,9 @@ const Foliage: React.FC<FoliageProps> = ({ isTree }) => {
     const scatterPositions = new Float32Array(count * 3);
     const sizes = new Float32Array(count);
     const phases = new Float32Array(count);
-    const positions = new Float32Array(count * 3); // Initial positions (buffer)
+    // CRITICAL FIX: Initialize positions with data so the bounding box is not zero-sized!
+    // We use scatterPositions as the initial state for the bounding box.
+    const positions = new Float32Array(count * 3); 
 
     for (let i = 0; i < count; i++) {
       const tPos = getRandomConePoint(CONFIG.TREE_HEIGHT, CONFIG.TREE_RADIUS_BASE);
@@ -96,6 +98,11 @@ const Foliage: React.FC<FoliageProps> = ({ isTree }) => {
       scatterPositions[i * 3] = sPos.x;
       scatterPositions[i * 3 + 1] = sPos.y;
       scatterPositions[i * 3 + 2] = sPos.z;
+      
+      // Initialize 'position' attribute to scattered state to ensure bounding box includes these points
+      positions[i * 3] = sPos.x;
+      positions[i * 3 + 1] = sPos.y;
+      positions[i * 3 + 2] = sPos.z;
 
       // Randomly assign varying sizes
       sizes[i] = Math.random() < 0.1 ? 0.3 : 0.15; // Occasional large sparkle
@@ -127,12 +134,12 @@ const Foliage: React.FC<FoliageProps> = ({ isTree }) => {
   }), []);
 
   return (
-    <points ref={pointsRef}>
+    <points ref={pointsRef} frustumCulled={false}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
           count={positions.length / 3}
-          array={positions} // Technically unused by shader but needed for bounding box
+          array={positions} 
           itemSize={3}
         />
         <bufferAttribute

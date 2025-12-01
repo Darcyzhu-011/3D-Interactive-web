@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { OrbitControls, Environment, PerspectiveCamera, Stars, Float, ContactShadows } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, Stars, Float, ContactShadows } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette, Noise } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import Foliage from './Foliage';
@@ -13,6 +13,8 @@ interface ExperienceProps {
 const Experience: React.FC<ExperienceProps> = ({ isTree }) => {
   return (
     <>
+      <color attach="background" args={['#010804']} />
+      
       <PerspectiveCamera makeDefault position={[0, 2, 20]} fov={50} />
       <OrbitControls 
         enablePan={false} 
@@ -24,27 +26,25 @@ const Experience: React.FC<ExperienceProps> = ({ isTree }) => {
       />
 
       {/* Lighting - Cinematic and Dramatic */}
-      <ambientLight intensity={0.2} color={COLORS.EMERALD_DEEP} />
+      <ambientLight intensity={0.5} color={COLORS.EMERALD_DEEP} />
+      <hemisphereLight intensity={0.5} color={COLORS.WHITE_WARM} groundColor={COLORS.EMERALD_DEEP} />
       
       {/* Main Key Light (Warm Gold) - Increased Intensity */}
       <spotLight
         position={[10, 20, 10]}
         angle={0.3}
         penumbra={1}
-        intensity={5} 
+        intensity={8} 
         color={COLORS.GOLD_HIGHLIGHT}
         castShadow
         shadow-bias={-0.0001}
       />
       
       {/* Fill Light (Cool Emerald) */}
-      <pointLight position={[-10, 5, -10]} intensity={2} color={COLORS.EMERALD_LIGHT} />
+      <pointLight position={[-10, 5, -10]} intensity={3} color={COLORS.EMERALD_LIGHT} />
       
       {/* Rim Light for outline */}
-      <spotLight position={[0, 10, -15]} intensity={5} color="#ffffff" angle={0.5} />
-
-      {/* Environment for Reflections */}
-      <Environment preset="city" />
+      <spotLight position={[0, 10, -15]} intensity={6} color="#ffffff" angle={0.5} />
 
       {/* Scene Objects */}
       <group position={[0, -2, 0]}>
