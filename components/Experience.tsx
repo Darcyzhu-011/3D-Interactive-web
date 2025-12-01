@@ -72,7 +72,7 @@ const Experience: React.FC<ExperienceProps> = ({ isTree }) => {
       <BackgroundStars />
 
       {/* Post Processing - Enhanced Gold Bloom */}
-      <EffectComposer enableNormalPass={false}>
+      <EffectComposer enableNormalPass={false} multisampling={0}>
         <Bloom 
             luminanceThreshold={0.25} // Lower threshold to catch more gold
             luminanceSmoothing={0.9} 

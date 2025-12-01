@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useLayoutEffect } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { generateDualPositions } from '../utils/geometry';
-import { CONFIG, GOLD_MATERIAL, RED_MATERIAL, COLORS } from '../constants';
+import { CONFIG, COLORS } from '../constants';
 import { DualPosition } from '../types';
 
 interface OrnamentGroupProps {
@@ -26,6 +26,13 @@ const Ornaments: React.FC<OrnamentGroupProps> = ({ isTree, type }) => {
   // Set colors for instances once
   useLayoutEffect(() => {
     if (!meshRef.current) return;
+
+    // CRITICAL FIX: Initialize instanceColor attribute if it doesn't exist
+    // Three.js InstancedMesh does not create this buffer by default.
+    if (!meshRef.current.instanceColor) {
+        meshRef.current.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(count * 3), 3);
+    }
+
     const tempColor = new THREE.Color();
     
     for (let i = 0; i < count; i++) {
@@ -39,7 +46,7 @@ const Ornaments: React.FC<OrnamentGroupProps> = ({ isTree, type }) => {
         tempColor.offsetHSL(0, 0, (Math.random() - 0.5) * 0.1);
         meshRef.current.setColorAt(i, tempColor);
     }
-    meshRef.current.instanceColor!.needsUpdate = true;
+    meshRef.current.instanceColor.needsUpdate = true;
   }, [count]);
 
 
@@ -81,10 +88,6 @@ const Ornaments: React.FC<OrnamentGroupProps> = ({ isTree, type }) => {
       // Save updated rotation back to state for continuity
       data.rotation.copy(dummy.rotation);
       
-      // Orient towards camera or up?
-      // For chaos, random is fine. For tree, maybe align slightly? 
-      // Keeping random rotation looks more natural for ornaments.
-
       // Scale
       dummy.scale.setScalar(data.scale);
 
@@ -106,10 +109,6 @@ const Ornaments: React.FC<OrnamentGroupProps> = ({ isTree, type }) => {
       ) : (
         <boxGeometry args={[0.3, 0.3, 0.3]} />
       )}
-      {/* 
-        We use a standard material here, but we could use MeshPhysicalMaterial 
-        for better glass/metal effects. 
-      */}
       <meshStandardMaterial
         color={COLORS.WHITE_WARM} // Base color, overridden by instanceColor
         roughness={0.15}

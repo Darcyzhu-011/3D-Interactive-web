@@ -1,6 +1,7 @@
 import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Loader } from '@react-three/drei';
+import * as THREE from 'three';
 import Experience from './components/Experience';
 import Overlay from './components/Overlay';
 
@@ -16,9 +17,9 @@ const App: React.FC = () => {
           shadows
           dpr={[1, 2]} // Quality scaling for performance
           gl={{ 
-            antialias: false, // Postprocessing handles AA better usually, or we use FXAA
-            toneMapping: 1, // ACESFilmic
-            toneMappingExposure: 1.2
+            antialias: false, // Postprocessing handles AA
+            toneMapping: THREE.ACESFilmicToneMapping, // Better for high dynamic range (bloom)
+            toneMappingExposure: 1.0
           }}
         >
           <Suspense fallback={null}>
