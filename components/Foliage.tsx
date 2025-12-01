@@ -42,8 +42,10 @@ const vertexShader = `
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
     
-    // Size attenuation
-    gl_PointSize = aSize * (300.0 / -mvPosition.z);
+    // Size attenuation with safety clamp for z
+    // -mvPosition.z is positive in front of camera
+    float dist = max(1.0, -mvPosition.z);
+    gl_PointSize = aSize * (300.0 / dist);
     
     // Twinkle effect
     vAlpha = 0.6 + 0.4 * sin(uTime * 2.0 + aPhase);
